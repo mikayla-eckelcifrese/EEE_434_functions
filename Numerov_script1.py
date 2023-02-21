@@ -91,7 +91,7 @@ def numerov1(numPoints):
       label='npoints:',
       valmin=3,
       valmax=101,
-      valstep=5,
+      valstep=1,
       valinit=10,
   )
 
@@ -105,7 +105,7 @@ def numerov1(numPoints):
       end=time.time()
       timetaken=end-start
 
-      # The wave funciton is not normalized.
+      # The wave function is not normalized.
       # prob = np.trapz(np.power(solver.psi_left,2),solver.x)
       fig.suptitle("Numerov solution to PIB\n" + "Time taken: {:.2f} ms".format(timetaken*1000))
 
