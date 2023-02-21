@@ -58,7 +58,7 @@ class NumerovSolverPIB_v2:
 def numerov2(numPoints):
   # Create the figure and the line that we will manipulate
   fig, ax = plt.subplots()
-  solver=NumerovSolverPIB_v2(0,1,10)
+  solver=NumerovSolverPIB_v2(0,1,numPoints)
   start=time.time()
   solver.Numerov_left()
   solver.Numerov_right()
