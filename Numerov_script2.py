@@ -55,83 +55,83 @@ class NumerovSolverPIB_v2:
         # Normalize the function
         self.psi_right = self.psi_right/np.sqrt(self.prob_right)
 
+def numerov2(numPoints):
+  # Create the figure and the line that we will manipulate
+  fig, ax = plt.subplots()
+  solver=NumerovSolverPIB_v2(0,1,10)
+  start=time.time()
+  solver.Numerov_left()
+  solver.Numerov_right()
+  end=time.time()
+  timetaken=end-start
 
-# Create the figure and the line that we will manipulate
-fig, ax = plt.subplots()
-solver=NumerovSolverPIB_v2(0,1,10)
-start=time.time()
-solver.Numerov_left()
-solver.Numerov_right()
-end=time.time()
-timetaken=end-start
+  prob_left = np.trapz(np.power(solver.psi_left,2),solver.x)
+  prob_right = np.trapz(np.power(solver.psi_right,2),solver.x)
 
-prob_left = np.trapz(np.power(solver.psi_left,2),solver.x)
-prob_right = np.trapz(np.power(solver.psi_right,2),solver.x)
+  fig.suptitle("Numerov solution to PIB, "
+            + r"$\int\psi_\mathrm{left}$=" + "{:.2g}".format(prob_left)
+            + r", $\int\psi_\mathrm{right}=$" + "{:.2g}".format(prob_right)
+            + "\nTime taken: {:.2f} ms".format(timetaken*1000))
 
-fig.suptitle("Numerov solution to PIB, "
-          + r"$\int\psi_\mathrm{left}$=" + "{:.2g}".format(prob_left)
-          + r", $\int\psi_\mathrm{right}=$" + "{:.2g}".format(prob_right)
-          + "\nTime taken: {:.2f} ms".format(timetaken*1000))
+  # plot both the lines and points to make it visually better
+  line_l, = ax.plot(solver.x, solver.psi_left, c='b',label=r'$\psi_\mathrm{left}$')
+  scatter_l = ax.scatter(solver.x, solver.psi_left, c='b')
 
-# plot both the lines and points to make it visually better
-line_l, = ax.plot(solver.x, solver.psi_left, c='b',label=r'$\psi_\mathrm{left}$')
-scatter_l = ax.scatter(solver.x, solver.psi_left, c='b')
+  line_r, = ax.plot(solver.x, solver.psi_right, c='r',label=r'$\psi_\mathrm{right}$')
+  scatter_r = ax.scatter(solver.x, solver.psi_right, c='r')
 
-line_r, = ax.plot(solver.x, solver.psi_right, c='r',label=r'$\psi_\mathrm{right}$')
-scatter_r = ax.scatter(solver.x, solver.psi_right, c='r')
+  # Plot the reference analytical solution
+  x = np.linspace(0,1,1000)
+  psi = np.sqrt(2)*np.sin(np.pi*x)
+  ax.plot(x, psi, c='k',label=r'$\psi$')
 
-# Plot the reference analytical solution
-x = np.linspace(0,1,1000)
-psi = np.sqrt(2)*np.sin(np.pi*x)
-ax.plot(x, psi, c='k',label=r'$\psi$')
+  ax.set_xlabel(r'$x$ (bohr)')
+  ax.set_ylabel(r'$\psi(x)$')
+  plt.legend()
 
-ax.set_xlabel(r'$x$ (bohr)')
-ax.set_ylabel(r'$\psi(x)$')
-plt.legend()
+  # adjust the main plot to make room for the sliders
+  fig.subplots_adjust(bottom=0.25)
 
-# adjust the main plot to make room for the sliders
-fig.subplots_adjust(bottom=0.25)
+  # matplotlib slider
+  axn= fig.add_axes([0.25, 0.1, 0.65, 0.03])
+  n_slider = Slider(
+      ax=axn,
+      label='npoints:',
+      valmin=3,
+      valmax=101,
+      valstep=1,
+      valinit=10,
+  )
 
-# matplotlib slider
-axn= fig.add_axes([0.25, 0.1, 0.65, 0.03])
-n_slider = Slider(
-    ax=axn,
-    label='npoints:',
-    valmin=3,
-    valmax=101,
-    valstep=5,
-    valinit=10,
-)
+  # The function to be called anytime a slider's value changes
+  def update(val):
+     # plt.clf()
+      solver=NumerovSolverPIB_v2(0,1,n_slider.val)
+      start=time.time()
+      solver.Numerov_left()
+      solver.Numerov_right()
+      end=time.time()
+      timetaken=end-start
 
-# The function to be called anytime a slider's value changes
-def update(val):
-   # plt.clf()
-    solver=NumerovSolverPIB_v2(0,1,n_slider.val)
-    start=time.time()
-    solver.Numerov_left()
-    solver.Numerov_right()
-    end=time.time()
-    timetaken=end-start
+      prob_left = np.trapz(np.power(solver.psi_left,2),solver.x)
+      prob_right = np.trapz(np.power(solver.psi_right,2),solver.x)
+      fig.suptitle("Numerov solution to PIB, "
+                + r"$\int\psi_\mathrm{left}$=" + "{:.2g}".format(prob_left)
+                + r", $\int\psi_\mathrm{right}=$" + "{:.2g}".format(prob_right)
+                + "\nTime taken: {:.2f} ms".format(timetaken*1000))
 
-    prob_left = np.trapz(np.power(solver.psi_left,2),solver.x)
-    prob_right = np.trapz(np.power(solver.psi_right,2),solver.x)
-    fig.suptitle("Numerov solution to PIB, "
-              + r"$\int\psi_\mathrm{left}$=" + "{:.2g}".format(prob_left)
-              + r", $\int\psi_\mathrm{right}=$" + "{:.2g}".format(prob_right)
-              + "\nTime taken: {:.2f} ms".format(timetaken*1000))
+      # plot both the lines and points to make it visually better
+      line_l.set_xdata(solver.x)
+      line_l.set_ydata(solver.psi_left)
+      scatter_l.set_offsets(np.c_[solver.x, solver.psi_left])
 
-    # plot both the lines and points to make it visually better
-    line_l.set_xdata(solver.x)
-    line_l.set_ydata(solver.psi_left)
-    scatter_l.set_offsets(np.c_[solver.x, solver.psi_left])
-    
-    line_r.set_xdata(solver.x)
-    line_r.set_ydata(solver.psi_right)
-    scatter_r.set_offsets(np.c_[solver.x, solver.psi_right])
+      line_r.set_xdata(solver.x)
+      line_r.set_ydata(solver.psi_right)
+      scatter_r.set_offsets(np.c_[solver.x, solver.psi_right])
 
-    fig.canvas.draw_idle()
-    
-# register the update function with each slider
-n_slider.on_changed(update)
+      fig.canvas.draw_idle()
 
-plt.show()
+  # register the update function with each slider
+  n_slider.on_changed(update)
+
+  plt.show()
