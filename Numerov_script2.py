@@ -55,10 +55,10 @@ class NumerovSolverPIB_v2:
         # Normalize the function
         self.psi_right = self.psi_right/np.sqrt(self.prob_right)
 
-def numerov2(numPoints):
+def numerov2(numPoints, n = 1):
   # Create the figure and the line that we will manipulate
   fig, ax = plt.subplots()
-  solver=NumerovSolverPIB_v2(0,1,numPoints)
+  solver=NumerovSolverPIB_v2(0,n,numPoints)
   start=time.time()
   solver.Numerov_left()
   solver.Numerov_right()
@@ -82,7 +82,8 @@ def numerov2(numPoints):
 
   # Plot the reference analytical solution
   x = np.linspace(0,1,1000)
-  psi = np.sqrt(2)*np.sin(np.pi*x)
+  L = 1
+  psi = (np.sqrt(2/L))*np.sin(n*np.pi*x/L)
   ax.plot(x, psi, c='k',label=r'$\psi$')
 
   ax.set_xlabel(r'$x$ (bohr)')
