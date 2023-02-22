@@ -55,7 +55,7 @@ class NumerovSolverPIB_v2:
         # Normalize the function
         self.psi_right = self.psi_right/np.sqrt(self.prob_right)
 
-def numerov2(numPoints, n = 1):
+def numerov2(numPoints, n = 1, xlower = 0, xupper = 1):
   # Create the figure and the line that we will manipulate
   fig, ax = plt.subplots()
   solver=NumerovSolverPIB_v2(0,n,numPoints)
@@ -107,7 +107,7 @@ def numerov2(numPoints, n = 1):
   # The function to be called anytime a slider's value changes
   def update(val):
      # plt.clf()
-      solver=NumerovSolverPIB_v2(0,1,n_slider.val)
+      solver=NumerovSolverPIB_v2(xlower, xupper,n_slider.val)
       start=time.time()
       solver.Numerov_left()
       solver.Numerov_right()
