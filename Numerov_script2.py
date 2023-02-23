@@ -18,7 +18,7 @@ import time
 
 # An improved version that handles normalization
 class NumerovSolverPIB_v2:
-    def __init__(self, xlower, xupper, npoints=1000):
+    def __init__(self, xlower, xupper, npoints=1000, n = 1):
         self.xlower = xlower
         self.xupper = xupper
         self.npoints = npoints
@@ -27,7 +27,7 @@ class NumerovSolverPIB_v2:
         self.x1 = 1e-2 # A small positive value as the initial guess the psi value at the second grid point
         self.psi_left = None
         self.psi_right = None
-        self.k2 = np.pi**2
+        self.k2 = n**2 * np.pi**2
         self.prob_left = None
         self.prob_right = None
 
@@ -46,6 +46,10 @@ class NumerovSolverPIB_v2:
         self.psi_left = self.psi_left/np.sqrt(self.prob_left)
 
     def Numerov_right(self):
+        if n%2 == 0:
+          constant = -1
+        else:
+          constant = 1
         self.psi_right = np.zeros(len(self.x))
         self.psi_right[-2] = self.x1
         for i in range(len(self.x)-2,0,-1):
@@ -53,12 +57,12 @@ class NumerovSolverPIB_v2:
         # Calculate the integral of probability distribution
         self.prob_right = np.trapz(np.power(self.psi_right,2),self.x)
         # Normalize the function
-        self.psi_right = self.psi_right/np.sqrt(self.prob_right)
+        self.psi_right = self.psi_right/np.sqrt(self.prob_right)*constant
 
 def numerov2(numPoints, n = 1, xlower = 0, xupper = 1):
   # Create the figure and the line that we will manipulate
   fig, ax = plt.subplots()
-  solver=NumerovSolverPIB_v2(0,n,numPoints)
+  solver=NumerovSolverPIB_v2(xlower,xupper,numPoints, n = n)
   start=time.time()
   solver.Numerov_left()
   solver.Numerov_right()
@@ -107,7 +111,7 @@ def numerov2(numPoints, n = 1, xlower = 0, xupper = 1):
   # The function to be called anytime a slider's value changes
   def update(val):
      # plt.clf()
-      solver=NumerovSolverPIB_v2(xlower, xupper,n_slider.val)
+      solver=NumerovSolverPIB_v2(xlower, xupper,n_slider.val, n = n)
       start=time.time()
       solver.Numerov_left()
       solver.Numerov_right()
