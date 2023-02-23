@@ -84,7 +84,7 @@ def ModifyPotential(potential):
 
 
 def VerifySyntaxPotential(potential):
-    """ Verify if the potential entered has an invalid syntax and demands another potential untils there is no more syntax error
+    """ Verify if the potential entered has any syntax errors and demands another potential until there are no more syntax errors
 
     Parameters:
     -----------
@@ -98,7 +98,7 @@ def VerifySyntaxPotential(potential):
 
     i=0
     while i == 0:
-        #Tries to evaluate the potential at x=0 and asks for a new one until there is no more syntax error
+        #Tries to evaluate the potential at x=0 and asks for a new one until there are no more syntax errors
         try:
             x=0
             eval(potential)
@@ -112,7 +112,7 @@ def VerifySyntaxPotential(potential):
 
 
 def VerifyLimitsPotential(potential):
-    """Verify if the potential seems to verify the borders conditions (to allow bound states). If it doesn't it ask to the user if he is sure that the potential respects these conditions
+    """Verify if the potential seems to verify the borders conditions (to allow bound states). If it doesn't, it asks the user if they are sure that the potential respects these conditions
 
     Parameters:
     -----------
@@ -120,7 +120,7 @@ def VerifyLimitsPotential(potential):
 
     Returns:
     --------
-        potential (str) : a new string with a valid python mathematical syntax and with value bigger than V(x=0) for x=-100 and x=100
+        potential (str) : a new string with valid python mathematical syntax and with a value bigger than V(x=0) for x=-100 and x=100
 
     """
 
@@ -194,7 +194,7 @@ def VerifyConcavity(PotentialArray, First_E_guess):
     i = 1
     #Continue while it doesn't find meeting points
     while i == 1:
-        print('First Energy guess:', First_E_guess)
+        #print('First Energy guess:', First_E_guess)
         index_min=list()
         index_max=list()
 
@@ -217,8 +217,8 @@ def VerifyConcavity(PotentialArray, First_E_guess):
                         index_max.append(i)
 
             #Defines the concavity value depending on
-            print('index max: ',index_max)
-            print('index_min: ',index_min)
+            #print('index max: ',index_max)
+            #print('index_min: ',index_min)
 
             if (max(index_max) > max(index_min)) and (min(index_max) > min(index_min)):
                 concavity = 'positive'
@@ -282,7 +282,7 @@ def TranslationPotential(PositionPotential, PotentialArray):
     #PositionPotential = PositionPotential - trans_x
 
     #print('trans_x; ',trans_x)
-    print('trans_y; ',trans_y)
+    #print('trans_y; ',trans_y)
 
     return PositionPotential, PotentialArray
 
@@ -294,7 +294,7 @@ def TranslatePotential(potential,trans_x,trans_y):
     #y translation
     potential = potential + '-' +  str(trans_y)
 
-    print(potential)
+    #print(potential)
 
     return potential
 
@@ -324,7 +324,7 @@ def E_Guess(EnergyLevelFound, E_guess_try, iteration, First_E_guess):
 
     """
 
-    print('Iteration: ',iteration)
+    #print('Iteration: ',iteration)
 
     #If it is the first time, return the first energy level of the quantum harmonic oscillator
     if iteration == 1:
@@ -370,9 +370,9 @@ def E_Guess(EnergyLevelFound, E_guess_try, iteration, First_E_guess):
     elif not E_level_smaller == None:
         E_guess = E_guess_try[E_level_smaller][1] * 2
 
-    print('E_level_guess:', E_level_guess )
-    print('E_level_bigger: ', E_level_bigger)
-    print('E_level_smaller: ', E_level_smaller)
+    #print('E_level_guess:', E_level_guess )
+    #print('E_level_bigger: ', E_level_bigger)
+    #print('E_level_smaller: ', E_level_smaller)
 
     return E_guess
 
@@ -410,18 +410,18 @@ def MeetingPointsPotential(E_guess, PotentialArray, PositionPotential, E_guess_t
             if (PotentialArray[i] < E_guess and PotentialArray[i+1] > E_guess) or (PotentialArray[i] > E_guess and PotentialArray[i+1] < E_guess) or (PotentialArray[i] == E_guess):
                 #And filter them
                 if (MeetingPoints[0] == None) or (PositionPotential[i] < MeetingPoints[0]):
-                    print('index rencontre min: ',i)
+                    #print('index rencontre min: ',i)
                     MeetingPoints[0] = PositionPotential[i]
                 elif (MeetingPoints[1] == None) or (PositionPotential[i] > MeetingPoints[1]):
                     MeetingPoints[1] = PositionPotential[i]
-                    print('index renccontre max: ', i)
+                    #print('index renccontre max: ', i)
 
         #If we have not found at least two meeting points, then make a new smaller energy guess and repeat for at most ten times
         if (MeetingPoints[0] == None) or (MeetingPoints[1] == None):
-            print('Restting the energy guess!\n')
+            #print('Restting the energy guess!\n')
             E_guess = (E_guess + max([k for j,k in E_guess_try.values() if k < E_guess]))/2
             iteration += 1
-            print('E_guess: ',E_guess)
+            #print('E_guess: ',E_guess)
             if iteration > 10:
                 end_program = True
                 break
@@ -589,7 +589,7 @@ def VerifyTolerance(WaveFunction, Tolerance, E_guess, E_guess_try, NumberOfNodes
 
     # i) Checks if the last value of the wave function respects the tolerance
     VerificationTolerance = 'yes' if np.absolute(WaveFunction[-1][1]) < Tolerance else 'no'
-    print('Last value Wave Function: ', WaveFunction[-1][1])
+    #print('Last value Wave Function: ', WaveFunction[-1][1])
 
     # ii) Checks if the energy guess doesn't change a lot
     try:
