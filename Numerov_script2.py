@@ -19,6 +19,7 @@ import time
 # An improved version that handles normalization
 class NumerovSolverPIB_v2:
     def __init__(self, xlower, xupper, npoints=1000, n = 1):
+        self.n = n
         self.xlower = xlower
         self.xupper = xupper
         self.npoints = npoints
@@ -46,10 +47,10 @@ class NumerovSolverPIB_v2:
         self.psi_left = self.psi_left/np.sqrt(self.prob_left)
 
     def Numerov_right(self):
-        if n%2 == 0:
-          constant = -1
+        if self.n % 2 == 0:
+          Constant = -1
         else:
-          constant = 1
+          Constant = 1
         self.psi_right = np.zeros(len(self.x))
         self.psi_right[-2] = self.x1
         for i in range(len(self.x)-2,0,-1):
@@ -57,7 +58,7 @@ class NumerovSolverPIB_v2:
         # Calculate the integral of probability distribution
         self.prob_right = np.trapz(np.power(self.psi_right,2),self.x)
         # Normalize the function
-        self.psi_right = self.psi_right/np.sqrt(self.prob_right)*constant
+        self.psi_right = self.psi_right/np.sqrt(self.prob_right)*Constant
 
 def numerov2(numPoints, n = 1, xlower = 0, xupper = 1):
   # Create the figure and the line that we will manipulate
