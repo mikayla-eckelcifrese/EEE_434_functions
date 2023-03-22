@@ -6,8 +6,8 @@ First presented at http://jakevdp.github.com/blog/2012/09/05/quantum-python/
 Author: Jake Vanderplas <vanderplas@astro.washington.edu>
 License: BSD
 """
-import matplotlib
-matplotlib.use('TkAgg')
+#import matplotlib
+#matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from matplotlib import animation
 from matplotlib.backend_bases import MouseButton
@@ -163,6 +163,7 @@ def animate_schrodinger_function(m = 1.9, V0 = 1.5, width_as_multiple_of_L = 3, 
       title.set_text("t = %.2f" % S.t)
       return (psi_x_line, V_x_line, center_line, psi_k_line, title)
 
+  tx = ax1.text(-90, 1.5, '')
 
   def on_click(event):
       if event.button is MouseButton.LEFT:
@@ -181,12 +182,12 @@ def animate_schrodinger_function(m = 1.9, V0 = 1.5, width_as_multiple_of_L = 3, 
             transmitted_prob = np.trapz(transmitted['y'].tolist())
             tunnel_prob = transmitted_prob/reflected_prob
 
-            print(f'Tunneling probability = {tunnel_prob}')
+            tx.set_text(f'Tunneling probability = {round(tunnel_prob, 5)}')
 
           if animation_pause:
-              anim.resume()
+            anim.resume()
           else:
-              anim.pause()
+            anim.pause()
           animation_pause = not animation_pause
           return animation_pause
 
