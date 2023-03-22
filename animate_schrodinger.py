@@ -162,6 +162,7 @@ def animate_schrodinger_function(m = 1.9, V0 = 1.5, width_as_multiple_of_L = 3):
   def on_click(event):
       if event.button is MouseButton.LEFT:
           global animation_pause
+
           if animation_pause:
               anim.resume()
           else:
