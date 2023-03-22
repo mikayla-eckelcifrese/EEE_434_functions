@@ -6,16 +6,21 @@ First presented at http://jakevdp.github.com/blog/2012/09/05/quantum-python/
 Author: Jake Vanderplas <vanderplas@astro.washington.edu>
 License: BSD
 """
-
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from matplotlib import animation
 from matplotlib.backend_bases import MouseButton
 import numpy as np
 from schrodinger import Schrodinger
+import pandas as pd
+from dfply import *
+
 
 animation_pause = False
 
-def animate_schrodinger_function(m = 1.9, V0 = 1.5, width_as_multiple_of_L = 3):
+def animate_schrodinger_function(m = 1.9, V0 = 1.5, width_as_multiple_of_L = 3, include_tunnel_prob = False):
+
   ######################################################################
   # Helper functions for gaussian wave-packets
   def gauss_x(x, a, x0, k0):
@@ -162,6 +167,21 @@ def animate_schrodinger_function(m = 1.9, V0 = 1.5, width_as_multiple_of_L = 3):
   def on_click(event):
       if event.button is MouseButton.LEFT:
           global animation_pause
+          if include_tunnel_prob == True:
+            #parameter of wrapper function, animate_schrodinger_function, at top of file, set to false by default
+            x_data = psi_x_line.get_xdata()
+            y_data = psi_x_line.get_ydata()
+            y_data_conj = np.conj(y_data)
+            PDF = y_data*y_data_conj
+
+            temp = pd.DataFrame({'y':PDF, 'x':x_data})
+            reflected = temp >> filter_by(X.x <= 0) #filter_by function from dfply library
+            transmitted = temp >> filter_by(X.x >= 0)
+            reflected_prob = np.trapz(reflected['y'].tolist())
+            transmitted_prob = np.trapz(transmitted['y'].tolist())
+            tunnel_prob = transmitted_prob/reflected_prob
+
+            print(f'Tunneling probability = {tunnel_prob}')
 
           if animation_pause:
               anim.resume()
@@ -184,3 +204,7 @@ def animate_schrodinger_function(m = 1.9, V0 = 1.5, width_as_multiple_of_L = 3):
   #          extra_args=['-vcodec', 'libx264'])
 
   plt.show()
+
+
+
+#animate_schrodinger_function(m = 1.9, V0 = 1.5, width_as_multiple_of_L = 3, include_tunnel_prob = True)
