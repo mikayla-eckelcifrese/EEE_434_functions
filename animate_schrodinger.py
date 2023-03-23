@@ -176,7 +176,7 @@ def animate_schrodinger_function(m = 1.9, V0 = 1.5, width_as_multiple_of_L = 3, 
             PDF = y_data*y_data_conj
 
             temp = pd.DataFrame({'y':PDF, 'x':x_data})
-            reflected = temp >> filter_by(X.x <= 0) #filter_by function from dfply library
+            reflected = temp >> filter_by(X.x <= 0) #filter_by function and pipe operator from dfply library
             transmitted = temp >> filter_by(X.x >= 0)
             reflected_prob = np.trapz(reflected['y'].tolist())
             transmitted_prob = np.trapz(transmitted['y'].tolist())
