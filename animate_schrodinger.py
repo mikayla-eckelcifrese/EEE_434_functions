@@ -180,7 +180,7 @@ def animate_schrodinger_function(m = 1.9, V0 = 1.5, width_as_multiple_of_L = 3, 
             transmitted = temp >> filter_by(X.x >= 0)
             reflected_prob = np.trapz(reflected['y'].tolist())
             transmitted_prob = np.trapz(transmitted['y'].tolist())
-            tunnel_prob = transmitted_prob/reflected_prob
+            tunnel_prob = transmitted_prob/(reflected_prob+transmitted_prob)
 
             tx.set_text(f'Tunneling probability = {round(tunnel_prob, 5)}')
 
