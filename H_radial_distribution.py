@@ -29,11 +29,12 @@ def plot_rad_dist(n, l, ax = None):
     R = psi_R(r, n=n, l=l)
 
     if ax is not None:
-        ax.plot(r, r ** 2 * R ** 2, lw=3, label=f"n={n}")
+        label = f"n = {n}, l = {l}"
+        ax.plot(r, r ** 2 * R ** 2, lw=3, label = label)
         ax.set_xlabel('$r [a_0]$', fontsize=12)
         ax.set_ylabel('$r^2 R^2_{nl}(r)$', fontsize=12)
         ax.grid(True)
-        plt.legend(labels=f"n={n}")
+        plt.legend()
 
     else:
         plot = plt.plot(r, r ** 2 * R ** 2, lw=3, label=f"n={n}")
