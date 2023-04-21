@@ -18,7 +18,6 @@ from numpy import vectorize
 # Import special functions 
 import scipy.special as spe
 
-@vectorize
 def psi_ang(phi, theta, l=0, m=0):
     sphHarm = spe.sph_harm(m, l, phi, theta)  # sph_harm switches theta and phi
 

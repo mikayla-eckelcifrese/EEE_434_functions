@@ -13,7 +13,7 @@ from numpy import vectorize
 # Import special functions 
 import scipy.special as spe
 
-@vectorize
+
 def psi_R(r, n=1, l=0):
     coeff = np.sqrt((2.0 / n) ** 3 * spe.factorial(n - l - 1) / (2.0 * n * spe.factorial(n + l)))
 
@@ -21,7 +21,6 @@ def psi_R(r, n=1, l=0):
 
     return coeff * np.exp(-r / n) * (2.0 * r / n) ** l * laguerre
 
-@vectorize
 def psi_ang(phi, theta, l=0, m=0):
     sphHarm = spe.sph_harm(m, l, phi, theta)
     if m < 0 and (abs(m) % 2) == 0:
@@ -35,7 +34,6 @@ def psi_ang(phi, theta, l=0, m=0):
 
     return sphHarm.real
 
-@vectorize
 def HFunc(r, theta, phi, n, l, m):
     '''
     Hydrogen wavefunction // a_0 = 1
