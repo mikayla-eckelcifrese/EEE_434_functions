@@ -23,19 +23,22 @@ def psi_R(r, n=1, l=0):
     return coeff * np.exp(-r / n) * (2.0 * r / n) ** l * laguerre
 
 
-def plot_rad_dist(n, l):
+def plot_rad_dist(n, l, ax = None):
     r = np.linspace(0, 100, 1000)
 
     R = psi_R(r, n=n, l=l)
 
-    plot = plt.plot(r, r ** 2 * R ** 2, lw=3, label=f"n={n}")
+    if ax is not None:
+        ax.plot(r, r ** 2 * R ** 2, lw=3, label=f"n={n}")
+        ax.set_xlabel('$r [a_0]$', fontsize=12)
+        ax.set_ylabel('$r^2 R^2_{nl}(r)$', fontsize=12)
+        ax.grid(True)
+        plt.legend(labels=f"n={n}")
 
-    plt.xlabel('$r [a_0]$', fontsize=12)
-
-    plt.ylabel('$r^2 R^2_{nl}(r)$', fontsize=12)
-
-    plt.grid('True')
-
-    plt.legend()
-    # plt.show()
-    return plot
+    else:
+        plot = plt.plot(r, r ** 2 * R ** 2, lw=3, label=f"n={n}")
+        plt.xlabel('$r [a_0]$', fontsize=12)
+        plt.ylabel('$r^2 R^2_{nl}(r)$', fontsize=12)
+        plt.grid('True')
+        plt.legend()
+        return plot
