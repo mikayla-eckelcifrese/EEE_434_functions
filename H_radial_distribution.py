@@ -22,7 +22,7 @@ def psi_R(r, n=1, l=0):
 
     return coeff * np.exp(-r / n) * (2.0 * r / n) ** l * laguerre
 
-
+@vectorize
 def plot_rad_dist(n, l, ax):
     r = np.linspace(0, 100, 1000)
 
