@@ -82,3 +82,34 @@ def plot_orbital(n, l, m):
     ax.set_zlabel('Z')
 
     plt.show()
+
+@vectorize
+def plot_hybrid_orbital(n = 1, l = 0, m = 0):
+    print(f'n = {n}, l = {l}, m = {m}')
+
+    psi_nlm_s = HFunc(r, theta, phi, n=n, l=l, m=m)
+    psi_nlm_p = HFunc(r, theta, phi, n=n+1, l=l+1, m=m+1)
+    psi_nlm = psi_nlm_s + psi_nlm_p
+
+    x = r * np.sin(theta) * np.cos(phi) * psi_nlm ** 2
+    y = r * np.sin(theta) * np.sin(phi) * psi_nlm ** 2
+    z = r * np.cos(theta) * psi_nlm ** 2
+
+    '''Set up the 3D Canvas'''
+
+    fig = plt.figure(figsize=(10, 10))
+    ax = fig.add_subplot(111, projection='3d')
+
+    '''Make 3D plot of the probability point cloud'''
+
+    ax.scatter(x, y, z, c=r ** 2 * psi_nlm ** 2, cmap='viridis', marker='.')
+
+    ''' Set axes limit to keep aspect ratio 1:1:1 '''
+    ax.set_xlim3d(-0.015, 0.015)
+    ax.set_ylim3d(-0.015, 0.015)
+    ax.set_zlim3d(-0.015, 0.015)
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+
+    plt.show()
