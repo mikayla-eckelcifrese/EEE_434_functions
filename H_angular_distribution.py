@@ -39,6 +39,7 @@ phi, theta = np.meshgrid(phi, theta)
 
 @vectorize
 def plot_angular_dist(l, m):
+    print(f'l = {l}, m = {m}')
     Ylm = psi_ang(phi, theta, l=l, m=m)
 
     x = np.sin(theta) * np.cos(phi) * abs(Ylm)
