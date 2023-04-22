@@ -53,10 +53,11 @@ def HFunc(r, theta, phi, n, l, m):
     return psi_R(r, n, l) * psi_ang(phi, theta, l, m)
 
 
-r, phi, theta = np.mgrid[0:5:21j, 0:2 * np.pi:36j, 0:np.pi:36j]
+r, phi, theta = np.mgrid[0:5:36j, 0:2 * np.pi:36j, 0:np.pi:36j]
 
 @vectorize
 def plot_orbital(n, l, m):
+    print(f'l = {l}, m = {m}')
     psi_nlm = HFunc(r, theta, phi, n=n, l=l, m=m)
 
     x = r * np.sin(theta) * np.cos(phi) * psi_nlm ** 2
